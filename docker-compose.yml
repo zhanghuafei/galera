@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  node-1:
+    build:
+      context: ./dockerfiles
+      dockerfile: cluster
+    ports:
+      - "4001:3306"
+    command: sudo -u mysql mysqld --wsrep-new-cluster
+
+  node-2:
+    build:
+      context: ./dockerfiles
+      dockerfile: cluster
+    ports:
+      - "4002:3306"
+    links:
+      - node-1
+    command: sudo -u mysql mysqld
+
+  node-3:
+    build:
+      context: ./dockerfiles
+      dockerfile: cluster
+    ports:
+      - "4003:3306"
+    links:
+      - node-1
+    command: sudo -u mysql mysqld
+
+
+iptables -I INPUT -s 172.24.0.2 -j DROP
+ping 172.24.0.2
+insert into test(a) values (2);
+select * from test;
