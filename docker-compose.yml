@@ -29,7 +29,3 @@ services:
     command: sudo -u mysql mysqld
 
 
-iptables -I INPUT -s 172.24.0.2 -j DROP
-ping 172.24.0.2
-insert into test(a) values (2);
-select * from test;
